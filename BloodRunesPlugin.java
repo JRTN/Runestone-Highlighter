@@ -27,6 +27,7 @@ public class BloodRunesPlugin extends Plugin {
     private static final Set<Integer> ANIMATIONS = new ImmutableSet.Builder<Integer>()
             .add(
                 7201,
+                7139,
                 4482
             ).build();
 
