@@ -3,13 +3,20 @@ package net.runelite.client.plugins.bloodrunes;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.client.graphics.ModelOutlineRenderer;
-import net.runelite.client.plugins.bloodrunes.BloodRunesPlugin;
-import net.runelite.client.ui.overlay.*;
+import net.runelite.client.ui.overlay.Overlay;
+import net.runelite.client.ui.overlay.OverlayLayer;
+import net.runelite.client.ui.overlay.OverlayPosition;
+import net.runelite.client.ui.overlay.OverlayPriority;
+import net.runelite.client.ui.overlay.OverlayUtil;
 
 import javax.inject.Inject;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Shape;
 
-public class RunestoneOverlay extends Overlay {
+public class RunestoneOverlay extends Overlay
+{
 
     private final Client client;
     private final BloodRunesPlugin plugin;
@@ -29,30 +36,37 @@ public class RunestoneOverlay extends Overlay {
     }
 
     @Override
-    public Dimension render(Graphics2D graphics) {
+    public Dimension render(Graphics2D graphics)
+    {
 
         GameObject north = plugin.getRunestoneNorth();
         GameObject south = plugin.getRunestoneSouth();
 
-        if(north == null || south == null) {
+        if (north == null || south == null)
+        {
             return null;
         }
 
-        if(plugin.isChipping()) {
+        if (plugin.isChipping())
+        {
             renderRunestoneOverlay(graphics, north, Color.YELLOW);
             renderRunestoneOverlay(graphics, south, Color.YELLOW);
             return null;
         }
 
-        if(plugin.isMineable(Runestones.NORTH)) {
+        if (plugin.isMineable(Runestones.NORTH))
+        {
             renderRunestoneOverlay(graphics, north, Color.GREEN);
-        } else {
+        } else
+        {
             renderRunestoneOverlay(graphics, north, Color.RED);
         }
 
-        if(plugin.isMineable(Runestones.SOUTH)) {
+        if (plugin.isMineable(Runestones.SOUTH))
+        {
             renderRunestoneOverlay(graphics, south, Color.GREEN);
-        } else {
+        } else
+        {
             renderRunestoneOverlay(graphics, south, Color.RED);
         }
 
@@ -60,8 +74,13 @@ public class RunestoneOverlay extends Overlay {
         return null;
     }
 
-    private void renderRunestoneOverlay(Graphics2D graphics2D, GameObject object, Color color) {
-        //outlineRenderer.drawOutline(object, 8, color);
-        OverlayUtil.renderPolygon(graphics2D, object.getConvexHull(), color);
+    private void renderRunestoneOverlay(Graphics2D graphics2D, GameObject object, Color color)
+    {
+        Shape runeStone = object.getConvexHull();
+
+        if (runeStone != null)
+        {
+            OverlayUtil.renderPolygon(graphics2D, runeStone, color);
+        }
     }
 }
